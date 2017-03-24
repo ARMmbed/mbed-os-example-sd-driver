@@ -18,7 +18,6 @@ From the command-line, import the example:
 
 ```
 mbed import mbed-os-example-sd-driver
-cd mbed-os-example-sd-driver
 ```
 
 You should see: 

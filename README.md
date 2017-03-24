@@ -9,7 +9,7 @@ Please install [mbed CLI](https://github.com/ARMmbed/mbed-cli#installing-mbed-cl
 
 ## Hardware requirements
 
-This exmaple uses a RAM backed FAT filesystem. 
+This example uses a RAM backed FAT filesystem. 
 
 ## Import the example application
 
@@ -19,6 +19,19 @@ From the command-line, import the example:
 mbed import mbed-os-example-sd-driver
 cd mbed-os-example-sd-driver
 ```
+
+Do new in the directory to import mbed-os:
+
+```
+mbed new .
+```
+
+Add the sd-driver repository: 
+
+```
+mbed add sd-driver
+```
+
 
 ### Now compile
 
@@ -32,31 +45,55 @@ Your PC may take a few minutes to compile your code. At the end, you see the fol
 
 ```
 [snip]
+Compile [ 99.7%]: SDBlockDevice.cpp
+Compile [100.0%]: SPIFBlockDevice.cpp
+Link: mbed-os-example-sd-driver
+Elf2Bin: mbed-os-example-sd-driver
 +--------------------------+-------+-------+-------+
 | Module                   | .text | .data |  .bss |
 +--------------------------+-------+-------+-------+
-| Fill                     |   164 |     0 |  2136 |
-| Misc                     | 54505 |  2556 |   754 |
-| drivers                  |   640 |     0 |    32 |
-| features/filesystem      | 15793 |     0 |   550 |
+| Fill                     |   162 |     0 |  2514 |
+| Misc                     | 53840 |  2284 |  1112 |
+| drivers                  |  1130 |     0 |    64 |
+| features/filesystem      | 13379 |     0 |   550 |
 | features/storage         |    42 |     0 |   184 |
-| hal                      |   418 |     0 |     8 |
-| platform                 |  2355 |    20 |   582 |
-| rtos                     |   135 |     4 |     4 |
-| rtos/rtx                 |  5861 |    20 |  6870 |
-| targets/TARGET_Freescale |  8382 |    12 |   384 |
-| Subtotals                | 88295 |  2612 | 11504 |
+| hal                      |   450 |     0 |     8 |
+| platform                 |  2497 |    20 |   582 |
+| rtos                     |   149 |     4 |     4 |
+| rtos/rtx                 |  6143 |    20 |  6870 |
+| targets/TARGET_Freescale | 12888 |    12 |   384 |
+| Subtotals                | 90680 |  2340 | 12272 |
 +--------------------------+-------+-------+-------+
 Allocated Heap: 24576 bytes
 Allocated Stack: unknown
-Total Static RAM memory (data + bss): 14116 bytes
-Total RAM memory (data + bss + heap + stack): 38692 bytes
-Total Flash memory (text + data + misc): 91947 bytes
+Total Static RAM memory (data + bss): 14612 bytes
+Total RAM memory (data + bss + heap + stack): 39188 bytes
+Total Flash memory (text + data + misc): 94060 bytes
 
-Image: ./BUILD/K64F/gcc_arm/mbed-os-example-fat-filesystem.bin
+Image: .\BUILD\K64F\GCC_ARM\mbed-os-example-sd-driver.bin
 ```
 
-### Program your board
+### <a name="insert-sdcard-into-k64f"></a> Insert SDCard into K64F
+
+The examples and test cases have been run on a K64F with the following pre-formatted microSDHC cards:
+
+- Kingston 2GB mircoSDHC card.  
+- Kingston 8GB mircoSDHC card.  
+- SanDisk 16GB mircoSDHC ultra card.  
+
+If the card requires formatting then the following procedure is known to work:
+
+- Insert microSD card into SD adapter in USB stick (or similar) so the microSD card can be insert into windows PC.
+- Within file explorer, right click/Format on the USB drive.
+- Select FAT32, 4096 cluster size, Quick Format.
+- Format the drive.
+
+The microSD card should then be ready for use in the K64F. Insert the formatted card
+into the SDCard slot on the K64F PCB. 
+
+### <a name="run-the-example-binary-on-the-k64f"></a> Run the Example Binary on the K64F 
+
+Once the binary is built, copy the binary from `<root_dir>/mbed-os-example-sd-driver/BUILD/K64F/GCC_ARM/main.bin` to the K64F:
 
 1. Connect your mbed device to the computer over USB.
 1. Copy the binary file to the mbed device.
@@ -65,64 +102,42 @@ Image: ./BUILD/K64F/gcc_arm/mbed-os-example-fat-filesystem.bin
 
 You see the following output:
 
-```
-Welcome to the filesystem example.
-Formatting a FAT, RAM-backed filesystem. done.
-Mounting the filesystem on "/fs". done.
-Opening a new file, numbers.txt. done.
-Writing decimal numbers to a file (20/20) done.
-Closing file. done.
-Re-opening file read-only. done.
-Dumping file to screen.
-0
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-EOF.
-Closing file. done.
-Opening root directory. done.
-Printing all filenames:
-  numbers.txt
-Closeing root directory. done.
-Filesystem Demo complete.
+After connecting a serial console and resetting the target, the following trace should be seen:
 
-```
+	Welcome to the filesystem example.
+	Opening a new file, numbers.txt. done.
+	Writing decimal numbers to a file (20/20) done.
+	Closing file. done.
+	Re-opening file read-only. done.
+	Dumping file to screen.
+	0
+	1
+	2
+	3
+	4
+	5
+	6
+	7
+	8
+	9
+	10
+	11
+	12
+	13
+	14
+	15
+	16
+	17
+	18
+	19
+	EOF.
+	Closing file. done.
+	Opening root directory. done.
+	Printing all filenames:
+	  numbers.txt
+	Closeing root directory. done.
+	Filesystem Demo complete.
 
-## Switch from RAM backed block device to an SD card
-
-From the command-line, run the following command:
-
-```bash
-mbed add sd-driver
-```
-
-Then change the code on line 3 of `main.cpp` to import the SD card header:
-
-```C
-#include "SDBlockDevice.h"
-```
-
-Change the block device declaration on line 7 of `main.cpp` to use the SD card by replacing the `PinName`s with the pins connected to the SD card:
-
-```C
-SDBlockDevice bd(PinName mosi, PinName miso, PinName sclk, PinName cs);
-```
 
 ## Troubleshooting
 

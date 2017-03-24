@@ -9,7 +9,8 @@ Please install [mbed CLI](https://github.com/ARMmbed/mbed-cli#installing-mbed-cl
 
 ## Hardware requirements
 
-This example uses a RAM backed FAT filesystem. 
+This example can be used on a mbedos platform with SDCard slot or fitted with a 
+[CI Test Shield]((https://github.com/ARMmbed/ci-test-shield). 
 
 ## Import the example application
 
@@ -20,7 +21,18 @@ mbed import mbed-os-example-sd-driver
 cd mbed-os-example-sd-driver
 ```
 
-Do new in the directory to import mbed-os:
+You should see: 
+
+	[mbed] Importing program "mbed-os-example-sd-driver" from "https://github.com/ARMmbed/mbed-os-example-sd-driver" at latest revision in the current branch
+	[mbed] Adding library "mbed-os" from "https://github.com/ARMmbed/mbed-os" at rev #f4864dc6429e
+
+Move into the newly created direcrtory:
+
+```
+cd mbed-os-example-sd-driver
+```
+	
+If the mbed-os libarry was not automatically added (see trace above), do the following to import mbed-os:
 
 ```
 mbed new .

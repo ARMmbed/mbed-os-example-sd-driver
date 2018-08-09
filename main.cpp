@@ -19,9 +19,10 @@ void return_error(int ret_val){
 }
 
 void errno_error(void* ret_val){
-  if (ret_val == NULL)
+  if (ret_val == NULL) {
     printf(" Failure. %d \n", errno);
-  else
+    while (true) __WFI();
+  } else
     printf(" done.\n");
 }
 

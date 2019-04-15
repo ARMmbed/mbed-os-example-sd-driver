@@ -351,3 +351,11 @@ The above figure shows the K64F with the v1.0.0 CI test shield fitted. Note:
  pip install mbed-cli --upgrade
  ```
  
+
+## License and contributions
+
+The software is provided under Apache-2.0 license. Contributions to this project are accepted under the same license. Please see [contributing.md](CONTRIBUTING.md) for more info.
+
+This project contains code from other projects. The original license text is included in those source files. They must comply with our license guide.
+
+

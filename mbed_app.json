@@ -36,6 +36,9 @@
         "FSFAT_SDCARD_INSTALLED": 1
     },
     "target_overrides": {
+        "*": {
+            "platform.stdio-convert-newlines": 1
+        },
         "DISCO_F051R8": {
              "SPI_MOSI": "SPI_MOSI",
              "SPI_MISO": "SPI_MISO",

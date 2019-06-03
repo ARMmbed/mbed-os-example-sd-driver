@@ -1,0 +1,35 @@
+Welcome to the filesystem example.
+Mounting the filesystem... Opening a new file, numbers.txt. done.
+Writing decimal numbers to a file \(20\/20\) done.
+Closing file. done.
+Re-opening file read-only. done.
+Dumping file to screen.
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+EOF.
+Closing file. done.
+Opening root directory. done.
+Printing all filenames:
+.
+..
+numbers.txt
+Closing root directory. done.
+Filesystem Demo complete.

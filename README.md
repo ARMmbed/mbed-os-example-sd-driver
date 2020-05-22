@@ -1,7 +1,7 @@
 # Getting Started With The sd-driver
 
 This is the mbed-os example for the SDBlockDevice (SDCard) block device driver. 
-See the [sd-driver](https://github.com/armmbed/sd-driver) repository for more information.
+See the [SDBlockDevice documentation](https://os.mbed.com/docs/mbed-os/latest/apis/sdblockdevice.html) for more information.
 
 This guide reviews the steps to get the SDCard with FAT filesystem working on an mbed OS platform.
 
@@ -33,18 +33,6 @@ Move into the newly created directory:
 
 ```
 cd mbed-os-example-sd-driver
-```
-	
-If the mbed-os library was not automatically added (see trace above), do the following to import mbed-os:
-
-```
-mbed new .
-```
-
-Add the sd-driver repository: 
-
-```
-mbed add sd-driver
 ```
 
 ## Build the Example

@@ -1,3 +1,4 @@
+![](./resources/official_armmbed_example_badge.png)
 # Getting Started With The sd-driver
 
 This is the mbed-os example for the SDBlockDevice (SDCard) block device driver. 

@@ -32,7 +32,6 @@ target_sources(${APP_TARGET}
 target_link_libraries(${APP_TARGET}
     PRIVATE
         mbed-os
-        mbed-storage-blockdevice
         mbed-storage-sd
         mbed-storage-littlefs
 )

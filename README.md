@@ -5,8 +5,21 @@ This is the mbed-os example for the SDBlockDevice (SDCard) block device driver.
 See the [SDBlockDevice documentation](https://os.mbed.com/docs/mbed-os/latest/apis/sdblockdevice.html) for more information.
 
 This guide reviews the steps to get the SDCard with FAT filesystem working on an mbed OS platform.
+start/online-with-the-online-compiler.html#importing-the-code).)
 
-Please install [mbed CLI](https://github.com/ARMmbed/mbed-cli#installing-mbed-cli).
+## Mbed OS build tools
+
+### Mbed CLI 2
+
+Starting with version 6.5, Mbed OS uses Mbed CLI 2. It uses Ninja as a build system, and CMake to generate the build environment and manage the build process in a compiler-independent manner. If you are working with Mbed OS version prior to 6.5 then check the section [Mbed CLI 1](#mbed-cli-1).
+1. [Install Mbed CLI 2](https://os.mbed.com/docs/mbed-os/latest/build-tools/install-or-upgrade.html).
+1. From the command-line, import the example: `mbed-tools import mbed-os-example-sd-driver`
+1. Change the current directory to where the project was imported.
+
+### Mbed CLI 1
+1. [Install Mbed CLI 1](https://os.mbed.com/docs/mbed-os/latest/quick-start/offline-with-mbed-cli.html).
+1. From the command-line, import the example: `mbed import mbed-os-example-sd-driver`
+1. Change the current directory to where the project was imported.
 
 ## Hardware Requirements
 
@@ -16,63 +29,6 @@ This example can be used on an mbedos platform that:
 - Is fitted with a [CI Test Shield](https://github.com/ARMmbed/ci-test-shield). 
 
 This document uses the K64F as an example. Simply change the relevant options (e.g. -m K64F) to be appropriate for your target.
-
-## Create the Example Application
-
-From the command-line, import the example:
-
-```
-mbed import mbed-os-example-sd-driver
-```
-
-You should see: 
-
-	[mbed] Importing program "mbed-os-example-sd-driver" from "https://github.com/ARMmbed/mbed-os-example-sd-driver" at latest revision in the current branch
-	[mbed] Adding library "mbed-os" from "https://github.com/ARMmbed/mbed-os" at rev #f4864dc6429e
-
-Move into the newly created directory:
-
-```
-cd mbed-os-example-sd-driver
-```
-
-## Build the Example
-
-Invoke `mbed compile`, and specify the name of your platform and your favorite toolchain (`GCC_ARM`, `ARM`, `IAR`). For example, for the GCC_ARM toolchain:
-
-```
-mbed compile -m K64F -t GCC_ARM
-```
-
-Your PC may take a few minutes to compile your code. At the end, you see the following result:
-
-	[snip]
-	Compile [ 99.7%]: SDBlockDevice.cpp
-	Compile [100.0%]: SPIFBlockDevice.cpp
-	Link: mbed-os-example-sd-driver
-	Elf2Bin: mbed-os-example-sd-driver
-	+--------------------------+-------+-------+-------+
-	| Module                   | .text | .data |  .bss |
-	+--------------------------+-------+-------+-------+
-	| Fill                     |   162 |     0 |  2514 |
-	| Misc                     | 53840 |  2284 |  1112 |
-	| drivers                  |  1130 |     0 |    64 |
-	| features/filesystem      | 13379 |     0 |   550 |
-	| features/storage         |    42 |     0 |   184 |
-	| hal                      |   450 |     0 |     8 |
-	| platform                 |  2497 |    20 |   582 |
-	| rtos                     |   149 |     4 |     4 |
-	| rtos/rtx                 |  6143 |    20 |  6870 |
-	| targets/TARGET_Freescale | 12888 |    12 |   384 |
-	| Subtotals                | 90680 |  2340 | 12272 |
-	+--------------------------+-------+-------+-------+
-	Allocated Heap: 24576 bytes
-	Allocated Stack: unknown
-	Total Static RAM memory (data + bss): 14612 bytes
-	Total RAM memory (data + bss + heap + stack): 39188 bytes
-	Total Flash memory (text + data + misc): 94060 bytes
-	
-	Image: .\BUILD\K64F\GCC_ARM\mbed-os-example-sd-driver.bin
 
 ## <a name="insert-sdcard-into-k64f"></a> Insert SDCard into K64F
 
@@ -92,53 +48,62 @@ If the card requires formatting then the following procedure is known to work:
 The microSD card should then be ready for use in the K64F. Insert the formatted card
 into the SDCard slot on the K64F PCB. 
 
+## Build the Example
+
+1. Connect a USB cable between the USB port on the board and the host computer.
+1. Run the following command to build the example project, program the microcontroller flash memory, and open a serial terminal:
+
+    * Mbed CLI 2
+
+     ```sh
+     $ mbed-tools compile -m <TARGET> -t <TOOLCHAIN> --flash --sterm
+     ```
+
+    * Mbed CLI 1
+
+     ```sh
+     $ mbed compile -m <TARGET> -t <TOOLCHAIN> --flash --sterm
+     ```
+
 ## <a name="run-the-example-binary-on-the-k64f"></a> Run the Example Binary on the K64F 
 
-Copy the binary from `<root_dir>/mbed-os-example-sd-driver/BUILD/K64F/GCC_ARM/main.bin` to the K64F:
+You should see the following output in the serial terminal once the program has been flashed onto the microcontroller (reset your target if you don't):
 
-1. Connect your mbed device to the computer over USB.
-1. Copy the binary file to the mbed device.
-1. Press the reset button to start the program.
-1. Open the UART of the board in your favorite UART viewing program. For example, `screen /dev/ttyACM0`.
-
-You see the following output:
-
-After connecting a serial console and resetting the target, the following trace should be seen:
-
-	Welcome to the filesystem example.
-	Opening a new file, numbers.txt. done.
-	Writing decimal numbers to a file (20/20) done.
-	Closing file. done.
-	Re-opening file read-only. done.
-	Dumping file to screen.
-	0
-	1
-	2
-	3
-	4
-	5
-	6
-	7
-	8
-	9
-	10
-	11
-	12
-	13
-	14
-	15
-	16
-	17
-	18
-	19
-	EOF.
-	Closing file. done.
-	Opening root directory. done.
-	Printing all filenames:
-	  numbers.txt
-	Closeing root directory. done.
-	Filesystem Demo complete.
-
+```
+Welcome to the filesystem example.
+Opening a new file, numbers.txt. done.
+Writing decimal numbers to a file (20/20) done.
+Closing file. done.
+Re-opening file read-only. done.
+Dumping file to screen.
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+EOF.
+Closing file. done.
+Opening root directory. done.
+Printing all filenames:
+     numbers.txt
+Closeing root directory. done.
+Filesystem Demo complete.
+```
 
 ## <a name="testing-with-an-sdcard-on-target-xyx"></a> Testing with an SDCard on Target XYZ
 
@@ -148,125 +113,126 @@ the `mbed_app.json` file.
 
 The following is an example of the `mbed_app.json` file available in the repository:
 
-    {
-        "config": {
-            "UART_RX": "D0",
-            "UART_TX": "D1",
-            "DIO_0": "D0",
-            "DIO_1": "D1",
-            "DIO_2": "D2",
-            "DIO_3": "D3",
-            "DIO_4": "D4",
-            "DIO_5": "D5",
-            "DIO_6": "D6",
-            "DIO_7": "D7",
-            "DIO_8": "D8",
-            "DIO_9": "D9",
-            "SPI_CS": "D10",
-            "SPI_MOSI": "D11",
-            "SPI_MISO": "D12",
-            "SPI_CLK": "D13",
-            "I2C_SDA": "D14",
-            "I2C_SCL": "D15",
-            "I2C_TEMP_ADDR":"0x90",
-            "I2C_EEPROM_ADDR":"0xA0",
-            "AIN_0": "A0",
-            "AIN_1": "A1",
-            "AIN_2": "A2",
-            "AIN_3": "A3",
-            "AIN_4": "A4",
-            "AIN_5": "A5",
-            "AOUT" : "A5",
-            "PWM_0": "D3",
-            "PWM_1": "D5",
-            "PWM_2": "D6",
-            "PWM_3": "D9",
-            "DEBUG_MSG": 0,
-            "DEVICE_SPI": 1,
-            "FSFAT_SDCARD_INSTALLED": 1
-        },
-        "target_overrides": {
-            "DISCO_F051R8": {
-                 "SPI_MOSI": "SPI_MOSI",
-                 "SPI_MISO": "SPI_MISO",
-                 "SPI_CLK":  "SPI_SCK",
-                 "SPI_CS":   "SPI_CS"
-            },
-            "K20D50M": {
-                 "SPI_MOSI": "PTD2",
-                 "SPI_MISO": "PTD3",
-                 "SPI_CLK":  "PTD1",
-                 "SPI_CS":   "PTC2"
-            },
-            "KL22F": {
-                 "SPI_MOSI": "PTD6",
-                 "SPI_MISO": "PTD7",
-                 "SPI_CLK":  "PTD5",
-                 "SPI_CS":   "PTD4"
-            },
-            "KL25Z": {
-                 "SPI_MOSI": "PTD2",
-                 "SPI_MISO": "PTD3",
-                 "SPI_CLK":  "PTD1",
-                 "SPI_CS":   "PTD0"
-            },
-            "KL43Z": {
-                 "SPI_MOSI": "PTD6",
-                 "SPI_MISO": "PTD7",
-                 "SPI_CLK":  "PTD5",
-                 "SPI_CS":   "PTD4"
-            },
-            "KL46Z": {
-                 "SPI_MOSI": "PTD6",
-                 "SPI_MISO": "PTD7",
-                 "SPI_CLK":  "PTD5",
-                 "SPI_CS":   "PTD4"
-            },
-            "K64F": {
-                 "SPI_MOSI": "PTE3",
-                 "SPI_MISO": "PTE1",
-                 "SPI_CLK":  "PTE2",
-                 "SPI_CS":   "PTE4"
-            },
-            "K66F": {
-                 "SPI_MOSI": "PTE3",
-                 "SPI_MISO": "PTE1",
-                 "SPI_CLK":  "PTE2",
-                 "SPI_CS":   "PTE4"
-            },
-            "LPC11U37H_401": {
-                 "SPI_MOSI": "SDMOSI",
-                 "SPI_MISO": "SDMISO",
-                 "SPI_CLK":  "SDSCLK",
-                 "SPI_CS":   "SDSSEL"
-            },
-            "LPC2368": {
-                 "SPI_MOSI": "p11",
-                 "SPI_MISO": "p12",
-                 "SPI_CLK":  "p13",
-                 "SPI_CS":   "p14"
-            },
-            "NUCLEO_L031K6": {
-                 "SPI_MOSI": "SPI_MOSI",
-                 "SPI_MISO": "SPI_MISO",
-                 "SPI_CLK":  "SPI_SCK",
-                 "SPI_CS":   "SPI_CS"
-            },
-            "nRF51822": {
-                 "SPI_MOSI": "p12",
-                 "SPI_MISO": "p13",
-                 "SPI_CLK":  "p15",
-                 "SPI_CS":   "p14"
-            },
-            "RZ_A1H": {
-                 "SPI_MOSI": "P8_5",
-                 "SPI_MISO": "P8_6",
-                 "SPI_CLK":  "P8_3",
-                 "SPI_CS":   "P8_4"
-            }
-        }
-    }
-
+```json
+{
+     "config": {
+          "UART_RX": "D0",
+          "UART_TX": "D1",
+          "DIO_0": "D0",
+          "DIO_1": "D1",
+          "DIO_2": "D2",
+          "DIO_3": "D3",
+          "DIO_4": "D4",
+          "DIO_5": "D5",
+          "DIO_6": "D6",
+          "DIO_7": "D7",
+          "DIO_8": "D8",
+          "DIO_9": "D9",
+          "SPI_CS": "D10",
+          "SPI_MOSI": "D11",
+          "SPI_MISO": "D12",
+          "SPI_CLK": "D13",
+          "I2C_SDA": "D14",
+          "I2C_SCL": "D15",
+          "I2C_TEMP_ADDR":"0x90",
+          "I2C_EEPROM_ADDR":"0xA0",
+          "AIN_0": "A0",
+          "AIN_1": "A1",
+          "AIN_2": "A2",
+          "AIN_3": "A3",
+          "AIN_4": "A4",
+          "AIN_5": "A5",
+          "AOUT" : "A5",
+          "PWM_0": "D3",
+          "PWM_1": "D5",
+          "PWM_2": "D6",
+          "PWM_3": "D9",
+          "DEBUG_MSG": 0,
+          "DEVICE_SPI": 1,
+          "FSFAT_SDCARD_INSTALLED": 1
+     },
+     "target_overrides": {
+          "DISCO_F051R8": {
+               "SPI_MOSI": "SPI_MOSI",
+               "SPI_MISO": "SPI_MISO",
+               "SPI_CLK":  "SPI_SCK",
+               "SPI_CS":   "SPI_CS"
+          },
+          "K20D50M": {
+               "SPI_MOSI": "PTD2",
+               "SPI_MISO": "PTD3",
+               "SPI_CLK":  "PTD1",
+               "SPI_CS":   "PTC2"
+          },
+          "KL22F": {
+               "SPI_MOSI": "PTD6",
+               "SPI_MISO": "PTD7",
+               "SPI_CLK":  "PTD5",
+               "SPI_CS":   "PTD4"
+          },
+          "KL25Z": {
+               "SPI_MOSI": "PTD2",
+               "SPI_MISO": "PTD3",
+               "SPI_CLK":  "PTD1",
+               "SPI_CS":   "PTD0"
+          },
+          "KL43Z": {
+               "SPI_MOSI": "PTD6",
+               "SPI_MISO": "PTD7",
+               "SPI_CLK":  "PTD5",
+               "SPI_CS":   "PTD4"
+          },
+          "KL46Z": {
+               "SPI_MOSI": "PTD6",
+               "SPI_MISO": "PTD7",
+               "SPI_CLK":  "PTD5",
+               "SPI_CS":   "PTD4"
+          },
+          "K64F": {
+               "SPI_MOSI": "PTE3",
+               "SPI_MISO": "PTE1",
+               "SPI_CLK":  "PTE2",
+               "SPI_CS":   "PTE4"
+          },
+          "K66F": {
+               "SPI_MOSI": "PTE3",
+               "SPI_MISO": "PTE1",
+               "SPI_CLK":  "PTE2",
+               "SPI_CS":   "PTE4"
+          },
+          "LPC11U37H_401": {
+               "SPI_MOSI": "SDMOSI",
+               "SPI_MISO": "SDMISO",
+               "SPI_CLK":  "SDSCLK",
+               "SPI_CS":   "SDSSEL"
+          },
+          "LPC2368": {
+               "SPI_MOSI": "p11",
+               "SPI_MISO": "p12",
+               "SPI_CLK":  "p13",
+               "SPI_CS":   "p14"
+          },
+          "NUCLEO_L031K6": {
+               "SPI_MOSI": "SPI_MOSI",
+               "SPI_MISO": "SPI_MISO",
+               "SPI_CLK":  "SPI_SCK",
+               "SPI_CS":   "SPI_CS"
+          },
+          "nRF51822": {
+               "SPI_MOSI": "p12",
+               "SPI_MISO": "p13",
+               "SPI_CLK":  "p15",
+               "SPI_CS":   "p14"
+          },
+          "RZ_A1H": {
+               "SPI_MOSI": "P8_5",
+               "SPI_MISO": "P8_6",
+               "SPI_CLK":  "P8_3",
+               "SPI_CS":   "P8_4"
+          }
+     }
+}
+```
 Note the following things about the `mbed_app.json` file:
 
 - The `mbed_app.json` file is used to define target specific symbols for the SPI pins connecting the SDCard slot to the target MCU:
@@ -284,7 +250,7 @@ Note the following things about the `mbed_app.json` file:
 - The `"target_overrides"` section is used to override the "SPI\_xxx" symbols for specific target boards, which may have an SDCard slot, for example.
   This is the case for the K64F, where the "SPI\_xxx" are mapped to the pin names for the on-board SDCard.
 
-  ```
+  ```json
     "K64F": {
          "SPI_MOSI": "PTE3",
          "SPI_MISO": "PTE1",
@@ -330,13 +296,13 @@ The above figure shows the K64F with the v1.0.0 CI test shield fitted. Note:
 
 1. Make sure `mbed-cli` is working correctly and its version is newer than `1.0.0`.
 
- ```
+ ```sh
  mbed --version
  ```
 
  If not, update it:
 
- ```
+ ```sh
  pip install mbed-cli --upgrade
  ```
  

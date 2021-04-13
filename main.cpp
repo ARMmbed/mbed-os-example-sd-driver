@@ -1,12 +1,14 @@
+/* mbed Microcontroller Library
+ * Copyright (c) 2020-2021 Arm Limited and Contributors. All rights reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 #include "mbed.h"
 #include "LittleFileSystem.h"
 #include "SDBlockDevice.h"
 #include <stdio.h>
 #include <errno.h>
-/* mbed_retarget.h is included after errno.h so symbols are mapped to
- * consistent values for all toolchains */
 #include "platform/mbed_retarget.h"
-
 
 SDBlockDevice sd(MBED_CONF_SD_SPI_MOSI,
                  MBED_CONF_SD_SPI_MISO,

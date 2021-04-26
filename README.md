@@ -150,37 +150,37 @@ The following is an example of the `mbed_app.json` file available in the reposit
 
     {
         "config": {
-            "UART_RX": "D0",
-            "UART_TX": "D1",
-            "DIO_0": "D0",
-            "DIO_1": "D1",
-            "DIO_2": "D2",
-            "DIO_3": "D3",
-            "DIO_4": "D4",
-            "DIO_5": "D5",
-            "DIO_6": "D6",
-            "DIO_7": "D7",
-            "DIO_8": "D8",
-            "DIO_9": "D9",
-            "SPI_CS": "D10",
-            "SPI_MOSI": "D11",
-            "SPI_MISO": "D12",
-            "SPI_CLK": "D13",
-            "I2C_SDA": "D14",
-            "I2C_SCL": "D15",
+            "UART_RX": "ARDUINO_UNO_D0",
+            "UART_TX": "ARDUINO_UNO_D1",
+            "DIO_0": "ARDUINO_UNO_D0",
+            "DIO_1": "ARDUINO_UNO_D1",
+            "DIO_2": "ARDUINO_UNO_D2",
+            "DIO_3": "ARDUINO_UNO_D3",
+            "DIO_4": "ARDUINO_UNO_D4",
+            "DIO_5": "ARDUINO_UNO_D5",
+            "DIO_6": "ARDUINO_UNO_D6",
+            "DIO_7": "ARDUINO_UNO_D7",
+            "DIO_8": "ARDUINO_UNO_D8",
+            "DIO_9": "ARDUINO_UNO_D9",
+            "SPI_CS": "ARDUINO_UNO_D10",
+            "SPI_MOSI": "ARDUINO_UNO_D11",
+            "SPI_MISO": "ARDUINO_UNO_D12",
+            "SPI_CLK": "ARDUINO_UNO_D13",
+            "I2C_SDA": "ARDUINO_UNO_D14",
+            "I2C_SCL": "ARDUINO_UNO_D15",
             "I2C_TEMP_ADDR":"0x90",
             "I2C_EEPROM_ADDR":"0xA0",
-            "AIN_0": "A0",
-            "AIN_1": "A1",
-            "AIN_2": "A2",
-            "AIN_3": "A3",
-            "AIN_4": "A4",
-            "AIN_5": "A5",
-            "AOUT" : "A5",
-            "PWM_0": "D3",
-            "PWM_1": "D5",
-            "PWM_2": "D6",
-            "PWM_3": "D9",
+            "AIN_0": "ARDUINO_UNO_A0",
+            "AIN_1": "ARDUINO_UNO_A1",
+            "AIN_2": "ARDUINO_UNO_A2",
+            "AIN_3": "ARDUINO_UNO_A3",
+            "AIN_4": "ARDUINO_UNO_A4",
+            "AIN_5": "ARDUINO_UNO_A5",
+            "AOUT" : "ARDUINO_UNO_A5",
+            "PWM_0": "ARDUINO_UNO_D3",
+            "PWM_1": "ARDUINO_UNO_D5",
+            "PWM_2": "ARDUINO_UNO_D6",
+            "PWM_3": "ARDUINO_UNO_D9",
             "DEBUG_MSG": 0,
             "DEVICE_SPI": 1,
             "FSFAT_SDCARD_INSTALLED": 1
@@ -276,11 +276,11 @@ Note the following things about the `mbed_app.json` file:
     - "SPI\_CLK".  This is the serial Clock line.
 - The default configuration defined in the "config" section is for the standard Arduino header pin mappings for the SPI bus. 
   The "config" section defines a dictionary mapping functional names to target board Arduino header pins: 
-    - "SPI\_CS": "D10". This causes the MBED\_CONF\_APP\_SPI\_CS symbol to be defined in mbed\_config.h as D10, which is used in the filesystem test implementation.
+    - "SPI\_CS": "ARDUINO_UNO_D10". This causes the MBED\_CONF\_APP\_SPI\_CS symbol to be defined in mbed\_config.h as ARDUINO_UNO_D10, which is used in the filesystem test implementation.
       D10 is defined in the target specific PinNames.h file.
-    - "SPI\_MOSI": "D11". This causes the MBED\_CONF\_APP\_SPI\_MOSI symbol to be defined in mbed\_config.h.
-    - "SPI\_MISO": "D12". This causes the MBED\_CONF\_APP\_SPI\_MISO symbol to be defined in mbed\_config.h.
-    - "SPI\_CLK": "D13". This causes the MBED\_CONF\_APP\_SPI\_CLK symbol to be defined in mbed\_config.h.
+    - "SPI\_MOSI": "ARDUINO_UNO_D11". This causes the MBED\_CONF\_APP\_SPI\_MOSI symbol to be defined in mbed\_config.h.
+    - "SPI\_MISO": "ARDUINO_UNO_D12". This causes the MBED\_CONF\_APP\_SPI\_MISO symbol to be defined in mbed\_config.h.
+    - "SPI\_CLK": "ARDUINO_UNO_D13". This causes the MBED\_CONF\_APP\_SPI\_CLK symbol to be defined in mbed\_config.h.
 - The `"target_overrides"` section is used to override the "SPI\_xxx" symbols for specific target boards, which may have an SDCard slot, for example.
   This is the case for the K64F, where the "SPI\_xxx" are mapped to the pin names for the on-board SDCard.
 

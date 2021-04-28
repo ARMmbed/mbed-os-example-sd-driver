@@ -120,11 +120,11 @@ Note the following things about the `mbed_app.json` file:
     - "SPI\_CLK".  This is the serial Clock line.
 - The default configuration defined in the "config" section is for the standard Arduino header pin mappings for the SPI bus. 
   The "config" section defines a dictionary mapping functional names to target board Arduino header pins: 
-    - "SPI\_CS": "D10". This causes the MBED\_CONF\_APP\_SPI\_CS symbol to be defined in mbed\_config.h as D10, which is used in the filesystem test implementation.
+    - "SPI\_CS": "ARDUINO_UNO_D10". This causes the MBED\_CONF\_APP\_SPI\_CS symbol to be defined in mbed\_config.h as ARDUINO_UNO_D10, which is used in the filesystem test implementation.
       D10 is defined in the target specific PinNames.h file.
-    - "SPI\_MOSI": "D11". This causes the MBED\_CONF\_APP\_SPI\_MOSI symbol to be defined in mbed\_config.h.
-    - "SPI\_MISO": "D12". This causes the MBED\_CONF\_APP\_SPI\_MISO symbol to be defined in mbed\_config.h.
-    - "SPI\_CLK": "D13". This causes the MBED\_CONF\_APP\_SPI\_CLK symbol to be defined in mbed\_config.h.
+    - "SPI\_MOSI": "ARDUINO_UNO_D11". This causes the MBED\_CONF\_APP\_SPI\_MOSI symbol to be defined in mbed\_config.h.
+    - "SPI\_MISO": "ARDUINO_UNO_D12". This causes the MBED\_CONF\_APP\_SPI\_MISO symbol to be defined in mbed\_config.h.
+    - "SPI\_CLK": "ARDUINO_UNO_D13". This causes the MBED\_CONF\_APP\_SPI\_CLK symbol to be defined in mbed\_config.h.
 - The `"target_overrides"` section is used to override the "SPI\_xxx" symbols for specific target boards, which may have an SDCard slot, for example.
   This is the case for the K64F, where the "SPI\_xxx" are mapped to the pin names for the on-board SDCard.
 
